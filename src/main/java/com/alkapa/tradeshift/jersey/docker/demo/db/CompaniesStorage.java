@@ -53,4 +53,30 @@ public class CompaniesStorage {
       }
     }
   }
+
+  public boolean updateCompanyParentId(int id, int parentId) throws SQLException {
+    Connection conn = null;
+    PreparedStatement st = null;
+    try {
+      String commandText =
+      "UPDATE Companies\n"
+      + "SET parent_id = ?\n"
+      + "WHERE id = ?;";
+
+      conn = DriverManager.getConnection(this.connectionString);
+      st = conn.prepareStatement(commandText);
+
+      st.setInt(1, parentId);
+      st.setInt(2, id);
+
+      return st.execute();
+    } finally {
+      if (st != null) {
+        st.close();
+      }
+      if (conn != null) {
+        conn.close();
+      }
+    }
+  }
 }

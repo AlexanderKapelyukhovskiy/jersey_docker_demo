@@ -45,6 +45,23 @@ public class Companies {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateCompany(Company company, @PathParam("id") int id) {
-        return Response.ok().entity(company).build();
+        try {
+            if (company == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Company can't be null").build();
+            }
+            int parentId = company.getParentId();
+
+            Company[] companies = this.storage.getChildCompanies(parentId);
+            if(companies.length == 0){
+                return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Incorrect parentId").build();
+            }
+            this.storage.updateCompanyParentId(id, parentId);
+            company.setId(id);
+            return Response.ok().entity(company).build();
+        } catch (Exception e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
     }
 }
