@@ -48,6 +48,8 @@ public class Company {
     this.parentId = parentId;
   }
 
+  public Company() {}
+
   public Company(int id, String name, int parentId) {
     this.id = id;
     this.name = name;
