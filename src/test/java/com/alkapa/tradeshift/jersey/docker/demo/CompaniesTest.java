@@ -38,7 +38,7 @@ public class CompaniesTest {
     }
 
     @Test
-    public void testGetIt() {
+    public void testGetChildCompaniesById() {
         Company[] responseMsg = target.path("companies/10/child")
             .request().get(Company[].class);
 

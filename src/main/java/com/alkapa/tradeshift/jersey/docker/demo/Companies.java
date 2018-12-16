@@ -8,21 +8,37 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.alkapa.tradeshift.jersey.docker.demo.db.CompaniesStorage;
+
 /**
  * Root resource (exposed at "companies" path)
  */
 @Path("companies")
 public class Companies {
 
+    private CompaniesStorage storage;
+
+    public Companies() {
+        String connectionString
+            = "jdbc:mysql://mysql:3306/AmazingCo?user=root&password=qwerty";
+        CompaniesStorage storage = new CompaniesStorage(connectionString);
+        this.storage = storage;
+    }
+
     @GET
     @Path("/{id}/child")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCompanyById(@PathParam("id") int id) {
-        Company c = new Company(id, "Test", 0);
-        Company[] arr = new Company[2];
-        arr[0] = c;
-        arr[1] = c;
-        return Response.ok().entity(arr).build();
+    public Response getChildCompaniesById(@PathParam("id") int id) {
+        try {
+            Company[] companies = this.storage.getChildCompanies(id);
+            if(companies.length == 0) {
+                return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Company not found for id: " + id).build();
+            }
+            return Response.ok().entity(companies).build();
+        } catch (Exception e) {
+            return Response.serverError().entity(e.getMessage()).build();
+        }
     }
 
     @PUT

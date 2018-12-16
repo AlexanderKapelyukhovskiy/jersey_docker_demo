@@ -7,6 +7,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 import java.io.IOException;
 import java.net.URI;
 
+import com.alkapa.tradeshift.jersey.docker.demo.db.CompaniesStorage;
+
 /**
  * Main class.
  *
@@ -42,14 +44,20 @@ public class Main {
             String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
 
-        DbStorage dbStorage = new DbStorage();
+        String connectionString
+            = "jdbc:mysql://mysql:3306/AmazingCo?user=root&password=qwerty";
+        CompaniesStorage storage = new CompaniesStorage(connectionString);
         try{
-            dbStorage.testDatabase(
-                "jdbc:mysql://mysql:3306/AmazingCo?user=root&password=qwerty");
-                System.out.println("DbTest passed");
+            Company[] companies = storage.getChildCompanies(2);
+            for (int i = 0; i < companies.length; i++) {
+                Company c = companies[i];
+                System.out.format("%s, %s, %s\n",
+                    c.getId(), c.getName(), c.getParentId());
+            }
         }
         catch(Exception e){
             System.out.println("DbTest failed");
+            System.out.println(e);
         }
 
         System.in.read();

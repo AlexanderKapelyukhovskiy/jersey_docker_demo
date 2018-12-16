@@ -20,14 +20,14 @@ INSERT INTO Companies (id, name, parent_id) VALUES
   (6, 'Company A2', 2),
   (7, 'Company A3', 2),
 
-  (8, 'Company A1', 2),
-  (9, 'Company A2', 2),
-  (10, 'Company A3', 2),
+  (8, 'Company A4', 2),
+  (9, 'Company A5', 2),
+  (10, 'Company A6', 2),
 
   (11, 'Company B1', 3),
   (12, 'Company B2', 3),
   (13, 'Company B3', 3),
 
-  (14, 'Company C1', 3),
-  (15, 'Company C2', 3),
-  (16, 'Company C3', 3)
+  (14, 'Company C1', 4),
+  (15, 'Company C2', 4),
+  (16, 'Company C3', 4)
