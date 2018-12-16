@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+  api:
+    image: jersey-docker-demo
+    restart: always
+    ports:
+      - 18080:8080
+    networks:
+      - svc-net
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
+      MYSQL_USER: svcuser
+      MYSQL_PASSWORD: svcuserpassword
+      MYSQL_DATABASE: database
+    volumes:
+      - ./debug/mysql:/var/lib/mysql:rw
+    command: "--innodb_use_native_aio=0"
+    networks:
+      - svc-net
+networks:
+  svc-net:
+    driver: bridge
