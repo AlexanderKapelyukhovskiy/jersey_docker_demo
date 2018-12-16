@@ -41,7 +41,7 @@ This repository houses the source for Dockerized Java Api Demo image, files requ
 1. Add host entry to your hosts file:
 
    ```text
-   127.0.0.1     local.jersey-docke-demo.com
+   127.0.0.1     jersey-docker-demo.com
    ```
 
 1. [Windows Only] Install a linux bash shell. Options are:
@@ -62,7 +62,7 @@ If you are are not able to use the full Docker CE installation and are using Doc
 * You may need to use the following in the host file instead of what is stated above:
 
     ```text
-    192.168.99.100 jersey-docke-demo.com
+    192.168.99.100 jersey-docker-demo.com
     ```
 
 ### Building and Running the Server from source
