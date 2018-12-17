@@ -48,11 +48,12 @@ public class Main {
             = "jdbc:mysql://mysql:3306/AmazingCo?user=root&password=qwerty";
         CompaniesStorage storage = new CompaniesStorage(connectionString);
         try{
-            Company[] companies = storage.getChildCompanies(4);
+            //Company[] companies = storage.getChildCompanies(4);
+            Company[] companies = storage.getParentCompanies(16);
             for (int i = 0; i < companies.length; i++) {
                 Company c = companies[i];
-                System.out.format("%s, %s, %s\n",
-                    c.getId(), c.getName(), c.getParentId());
+                System.out.format("%s, %s, %s, %s\n",
+                    c.getId(), c.getName(), c.getParentId(), c.getDepth());
             }
         }
         catch(Exception e){

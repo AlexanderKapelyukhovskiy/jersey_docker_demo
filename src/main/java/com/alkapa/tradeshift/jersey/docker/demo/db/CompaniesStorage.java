@@ -23,9 +23,9 @@ public class CompaniesStorage {
     try {
 
       String queryText = "WITH RECURSIVE company_tree AS (\n"
-      + "SELECT * FROM Companies WHERE id=?\n"
+      + "SELECT *, 0 as depth FROM Companies WHERE id=?\n"
       + "UNION ALL\n"
-      + "SELECT c.* FROM Companies AS c\n"
+      + "SELECT c.*, t.depth + 1 FROM Companies AS c\n"
       + "JOIN company_tree AS t ON c.parent_id = t.id\n" + ")\n"
       + "SELECT * FROM company_tree;";
 
@@ -40,8 +40,47 @@ public class CompaniesStorage {
         int companyId = rs.getInt("id");
         String name = rs.getString("name");
         int parentId = rs.getInt("parent_id");
+        int depth = rs.getInt("depth");
 
-        companies.add(new Company(companyId, name, parentId));
+        companies.add(new Company(companyId, name, parentId, depth));
+      }
+      return companies.toArray(new Company[0]);
+    } finally {
+      if (st != null) {
+        st.close();
+      }
+      if (conn != null) {
+        conn.close();
+      }
+    }
+  }
+
+  public Company[] getParentCompanies(int id) throws SQLException {
+    Connection conn = null;
+    PreparedStatement st = null;
+    try {
+
+      String queryText = "WITH RECURSIVE company_parents AS (\n"
+      + "SELECT *, 0 as depth FROM Companies WHERE id=?\n"
+      + "UNION ALL\n"
+      + "SELECT c.*, t.depth + 1 FROM Companies AS c\n"
+      + "JOIN company_parents AS t ON c.id = t.parent_id\n" + ")\n"
+      + "SELECT * FROM company_parents;";
+
+      conn = DriverManager.getConnection(this.connectionString);
+      st = conn.prepareStatement(queryText);
+      st.setInt(1, id);
+
+      ResultSet rs = st.executeQuery();
+      ArrayList<Company> companies = new ArrayList<Company>();
+
+      while (rs.next()) {
+        int companyId = rs.getInt("id");
+        String name = rs.getString("name");
+        int parentId = rs.getInt("parent_id");
+        int depth = rs.getInt("depth");
+
+        companies.add(new Company(companyId, name, parentId, depth));
       }
       return companies.toArray(new Company[0]);
     } finally {

@@ -35,6 +35,20 @@ public class Companies {
                 return Response.status(Response.Status.NOT_FOUND)
                     .entity("Company not found for id: " + id).build();
             }
+            Company[] parentCompanies = this.storage.getParentCompanies(id);
+            if(parentCompanies.length == 0) {
+                return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Company not found for id: " + id).build();
+            }
+            Company root = parentCompanies[parentCompanies.length - 1];
+            int heightDelta = root.getDepth();
+
+            for (int i = 0; i < companies.length; i++) {
+                Company c = companies[i];
+                c.setRootId(root.getId());
+                c.setHeight(c.getDepth() + heightDelta);
+            }
+
             return Response.ok().entity(companies).build();
         } catch (Exception e) {
             return Response.serverError().entity(e.getMessage()).build();
