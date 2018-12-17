@@ -38,3 +38,4 @@ node_modules
 hs_err_pid*
 debug
 target
+src/test/

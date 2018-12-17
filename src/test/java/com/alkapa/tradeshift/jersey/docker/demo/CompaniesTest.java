@@ -39,7 +39,7 @@ public class CompaniesTest {
 
     @Test
     public void testGetChildCompaniesById() {
-        Company[] responseMsg = target.path("companies/10/child")
+        Company[] responseMsg = target.path("companies/10/divisions")
             .request().get(Company[].class);
 
         assertTrue("respone is not empty", responseMsg.length > 0);

@@ -44,24 +44,11 @@ public class Main {
             String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
 
-        String connectionString
-            = "jdbc:mysql://mysql:3306/AmazingCo?user=root&password=qwerty";
-        CompaniesStorage storage = new CompaniesStorage(connectionString);
-        try{
-            //Company[] companies = storage.getChildCompanies(4);
-            Company[] companies = storage.getParentCompanies(16);
-            for (int i = 0; i < companies.length; i++) {
-                Company c = companies[i];
-                System.out.format("%s, %s, %s, %s\n",
-                    c.getId(), c.getName(), c.getParentId(), c.getDepth());
-            }
+        int res = System.in.read();
+        System.out.println("Read res = " + res);
+        if(res == 13) {
+            System.out.println("shutdownNow");
+            server.shutdownNow();
         }
-        catch(Exception e){
-            System.out.println("DbTest failed");
-            System.out.println(e);
-        }
-
-        System.in.read();
-        server.shutdownNow();
     }
 }

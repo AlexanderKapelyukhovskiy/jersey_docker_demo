@@ -26,7 +26,7 @@ public class Companies {
     }
 
     @GET
-    @Path("/{id}/child")
+    @Path("/{id}/divisions")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getChildCompaniesById(@PathParam("id") int id) {
         try {
