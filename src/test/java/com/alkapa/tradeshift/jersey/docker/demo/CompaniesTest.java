@@ -8,6 +8,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
@@ -38,6 +39,7 @@ public class CompaniesTest {
     }
 
     @Test
+    @Ignore
     public void testGetChildCompaniesById() {
         Company[] responseMsg = target.path("companies/10/divisions")
             .request().get(Company[].class);
